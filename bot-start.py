@@ -1,12 +1,19 @@
 import discord
 from discord.ext import commands
 import random
-import json
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
 
-# Load quotes from the JSON file
+# Set up Google Sheets API
+scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive"]
+creds = ServiceAccountCredentials.from_json_keyfile_name("creds.json", scope)  # Your credentials JSON file
+client = gspread.authorize(creds)
+
+# Load quotes from Google Sheets
 def load_quotes():
-    with open('quotes.json', 'r') as f:
-        return json.load(f)
+    sheet = client.open("Quotes Archive").sheet1  # Replace with your Google Sheet name
+    quotes = sheet.col_values(1)  # Assuming all quotes are in the first column
+    return quotes
 
 # Bot Setup
 TOKEN = 'YOUR_DISCORD_BOT_TOKEN'
