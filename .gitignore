@@ -12,3 +12,7 @@ __pycache__/
 
 # Ignore any .env file if you're using one for environment variables
 .env
+
+# Ignore Google Sheets credentials and local environment file
+creds.json
+.env.local
